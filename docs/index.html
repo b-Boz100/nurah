@@ -19,12 +19,20 @@
     background: var(--cream);
   }
   header {
-    padding: 2.5rem 1.5rem 2rem; background: var(--ink); color: var(--cream);
+    padding: 2rem 1.75rem; background: var(--amber); color: var(--ink);
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;
   }
-  header .brand { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.02em; }
-  header .brand span { color: var(--amber); }
-  header h1 { margin: 0.6rem 0 0.2rem; font-size: 1.6rem; font-weight: 600; }
-  header p { margin: 0; opacity: 0.85; font-size: 0.95rem; }
+  header .header-text h1 {
+    margin: 0 0 0.5rem; font-size: 1.5rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.01em; line-height: 1.25;
+  }
+  header .header-text p { margin: 0; font-weight: 600; font-size: 0.9rem; }
+  .logo-badge {
+    flex-shrink: 0; background: #fff; border-radius: 999px; padding: 0.5rem 1.1rem;
+    display: flex; align-items: center;
+  }
+  .logo-badge img { height: 22px; display: block; }
+  @media (max-width: 560px) { header { flex-direction: column-reverse; } }
   main { max-width: 1080px; margin: 0 auto; padding: 1.5rem; }
   .channel {
     background: #fff; border-radius: 14px; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem;
@@ -61,9 +69,11 @@
 </head>
 <body>
 <header>
-  <div class="brand">nur<span>a</span>h.</div>
-  <h1>Weekly performance report</h1>
-  <p>2026-07-28 to 2026-08-03 · Generated 3 August 2026 at 4:58 pm</p>
+  <div class="header-text">
+    <h1>Digital marketing<br>weekly snapshot</h1>
+    <p>2026-07-28 to 2026-08-03 · Generated 3 August 2026 at 4:58 pm</p>
+  </div>
+  <div class="logo-badge"><img src="./assets/nurah-logo.jpg" alt="Nurah"></div>
 </header>
 <main>
 
@@ -225,7 +235,7 @@
     </section>
 </main>
 <footer>
-  <p>Internal reporting for CoAct / Nurah. Not for public distribution.</p>
+  <p>Prepared by: CoAct Customer &amp; Brand | CoAct</p>
   <p><a href="./reports/">Past reports</a></p>
 </footer>
 </body>
