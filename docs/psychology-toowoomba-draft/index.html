@@ -387,16 +387,9 @@ p { margin: 0; }
 .intro-video video { aspect-ratio: 1 / 1; object-fit: cover; }
 .intro-video figcaption { margin-top: 0.625rem; font-size: 0.875rem; font-weight: 600; }
 
-/* Mock form: stands in for the HubSpot embed so draft submissions can't create real leads */
-.form-mock { margin-top: 1.25rem; display: grid; gap: 1rem; }
-.form-mock label { display: grid; gap: 0.375rem; font-size: 0.9375rem; font-weight: 600; }
-.form-mock .field {
-  min-height: 3rem; border: 1px solid var(--line); border-radius: var(--radius-sm);
-  background: #FFFFFF;
-}
-.form-mock .field-tall { min-height: 6rem; }
-.form-mock .btn { justify-self: start; }
-.form-mock .mock-note { font-size: 0.8125rem; }
+/* Splose booking embed */
+.booking-slot { margin-top: 1rem; min-height: 700px; }
+.booking-slot iframe { width: 100%; border: 0; }
   </style>
 </head>
 <body>
@@ -449,18 +442,13 @@ p { margin: 0; }
           </figure>
         </div>
 
-        <!-- Mock form for the draft. When going live, replace with the HubSpot embed used on the Counselling page
-             (or a Psychology-specific form), which redirects to https://nurah.org.au/thanks/ where the conversion fires. -->
+        <!-- Splose online booking (booking page 2786b785-414c-43cc-aa3b-30c9b0e06507). LIVE booking system:
+             bookings made here are real. Every "Get in touch" button links to this panel. -->
         <aside class="form-panel" id="form" aria-labelledby="form-title">
-          <h2 id="form-title">Get in touch</h2>
-          <p>We'll get back to you within one business day.</p>
-          <div class="form-mock" aria-hidden="true">
-            <label>First name<span class="field"></span></label>
-            <label>Phone<span class="field"></span></label>
-            <label>Email<span class="field"></span></label>
-            <label>How can we help?<span class="field field-tall"></span></label>
-            <span class="btn btn-primary">Send</span>
-            <p class="mock-note"><span class="todo">Form preview only. The live HubSpot form goes here.</span></p>
+          <h2 id="form-title">Book a session</h2>
+          <p>Choose a time that suits you. Prefer to talk first? Call <a class="call-link" href="tel:1800571295" data-loc="form-panel">1800 571 295</a>.</p>
+          <div class="booking-slot">
+            <iframe id="splose-booking-2786b785-414c-43cc-aa3b-30c9b0e06507" src="https://nurah.splose.com/online-booking/2786b785-414c-43cc-aa3b-30c9b0e06507?embedVersion=v2" title="Online booking" name="onlineBookingEmbeded" scrolling="auto" width="100%" height="700" loading="lazy" frameBorder="0" style="display:block;transition:height 0.3s ease;"></iframe>
           </div>
         </aside>
       </div>
@@ -536,15 +524,15 @@ p { margin: 0; }
         <ol class="steps">
           <li>
             <div>
-              <h3>Get in touch</h3>
-              <p>Fill in the form or give us a call. We'll get back to you within one business day.</p>
-              <a class="btn btn-green step-cta" href="#form" data-loc="how-it-works">Get in touch</a>
+              <h3>Book online or call us</h3>
+              <p>Pick a time online, or give us a call and we'll help you find one.</p>
+              <a class="btn btn-green step-cta" href="#form" data-loc="how-it-works">Book a session</a>
             </div>
           </li>
           <li>
             <div>
-              <h3>Choose a time that suits you</h3>
-              <p>We'll offer you a few appointment times to choose from. Your sessions happen by video or phone, from wherever you feel comfortable.</p>
+              <h3>Get ready for your session</h3>
+              <p>We'll send you a link to join and simple instructions. Your sessions happen by video or phone, from wherever you feel comfortable.</p>
             </div>
           </li>
           <li>
@@ -682,7 +670,14 @@ p { margin: 0; }
 
   <nav class="action-bar" aria-label="Quick contact">
     <a class="btn btn-quiet call-link" href="tel:1800571295" data-loc="mobile-bar"><svg aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
-    <a class="btn btn-primary" href="#form" data-loc="mobile-bar">Get in touch</a>
+    <a class="btn btn-primary" href="#form" data-loc="mobile-bar">Book a session</a>
   </nav>
+
+  <!-- Splose embed script (supplied by Splose): resizes the booking frame and reports confirmed bookings.
+       NOTE for go-live: it pushes service_name to the dataLayer. Nurah's rule is not to send service names
+       (health information) to Google Ads or GA4, so GTM must not forward that field. GTM is off in this draft. -->
+  <script>
+window.addEventListener('message',function(e){if(e.origin!=='https://nurah.splose.com')return;if(!e.data||!e.data.type)return;var f=document.getElementById('splose-booking-2786b785-414c-43cc-aa3b-30c9b0e06507');if(!f||e.source!==f.contentWindow)return;if(e.data.type==='sploseIframeResize'){var h=e.data.height;if(typeof h==='number'&&isFinite(h)&&h>=0){f.style.height=h+'px';}}if(e.data.type==='sploseIframeScrollToTop'){f.scrollIntoView({behavior:'smooth',block:'start'});}if(e.data.type==='sploseBookingConfirmed'){var p=e.data.payload||{};window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'splose_booking_confirmed',booking_page_uuid:String(p.booking_page_uuid),booking_page_name:String(p.booking_page_name),service_name:String(p.service_name),location_name:String(p.location_name),service_price:Number(p.service_price)});}});
+  </script>
 </body>
 </html>
