@@ -387,6 +387,26 @@ p { margin: 0; }
 .intro-video video { aspect-ratio: 1 / 1; object-fit: cover; }
 .intro-video figcaption { margin-top: 0.625rem; font-size: 0.875rem; font-weight: 600; }
 
+/* Proposed fees, Medicare and funding sections */
+.proposed { margin-bottom: 0.75rem; }
+.proposed .sample-tag { margin-left: 0; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.fee-table-wrap { margin-top: 2rem; overflow-x: auto; max-width: 52rem; }
+.fee-table {
+  width: 100%; border-collapse: collapse; background: var(--paper);
+  border-radius: var(--radius-sm); overflow: hidden; font-size: 0.9375rem;
+  box-shadow: 0 1px 0 var(--line), 0 18px 36px -28px rgba(138, 90, 14, 0.35);
+}
+.fee-table th, .fee-table td { padding: 1rem 1.125rem; text-align: left; vertical-align: top; }
+.fee-table thead th { border-bottom: 3px solid var(--amber); font-size: 0.875rem; }
+.fee-table tbody tr + tr { border-top: 1px solid var(--line); }
+.fee-table tbody th { font-weight: 600; }
+.fee-table .you-pay { font-weight: 700; }
+.fine-print { margin-top: 1rem; max-width: 52rem; font-size: 0.875rem; }
+.medicare-note { margin-top: 2.5rem; max-width: 52rem; padding: 1.25rem 1.5rem; background: var(--paper); border-radius: var(--radius-sm); font-size: 0.9375rem; }
+.fund-grid { margin-top: 2rem; }
+@media (min-width: 48em) { .fund-grid { grid-template-columns: 1fr 1fr; gap: 2rem 3rem; } }
+
 /* Splose booking embed */
 .booking-slot { margin-top: 1rem; min-height: 700px; }
 .booking-slot iframe { width: 100%; border: 0; }
@@ -542,16 +562,110 @@ p { margin: 0; }
             </div>
           </li>
         </ol>
-
-        <!-- FEES: remove the hidden attribute once Psychology pricing and bulk billing are decided -->
-        <div class="fees" hidden>
-          <h3>Fees</h3>
-          <p><span class="todo">[Session fee and Medicare rebate]</span></p>
-        </div>
       </div>
     </section>
 
-    <section class="band" aria-labelledby="faq-title">
+    <!-- PROPOSED SECTIONS (16 October 2026): fees, Medicare and other funding. Structure modelled on
+         brisbanecitypsychologist.com.au/fees-and-rebates (first three blocks), rewritten in Nurah's voice.
+         Nurah's fees are undecided, so every fee is a placeholder. Rebate figures and item numbers are taken from
+         that competitor page (stated "as at 1 July 2026") and must be verified on MBS Online before use. -->
+    <section class="band" aria-labelledby="fees-title">
+      <div class="wrap">
+        <p class="proposed"><span class="sample-tag">Proposed section</span></p>
+        <h2 id="fees-title">Psychologist fees and Medicare rebates</h2>
+        <div class="prose">
+          <p>With a GP referral and a Mental Health Treatment Plan, you can get part of each session fee back from Medicare. Here's what a standard session costs.</p>
+        </div>
+
+        <div class="fee-table-wrap">
+          <table class="fee-table">
+            <caption class="visually-hidden">Session fees and Medicare rebates</caption>
+            <thead>
+              <tr>
+                <th scope="col">Psychologist</th>
+                <th scope="col">Session fee</th>
+                <th scope="col">Medicare rebate</th>
+                <th scope="col">You pay</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Registered Psychologist</th>
+                <td><span class="todo">[$fee]</span></td>
+                <td><span class="todo">[$101.55, to verify]</span></td>
+                <td class="you-pay"><span class="todo">[$gap]</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Clinical Psychologist <span class="todo">[if applicable]</span></th>
+                <td><span class="todo">[$fee]</span></td>
+                <td><span class="todo">[$149.05, to verify]</span></td>
+                <td class="you-pay"><span class="todo">[$gap]</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="fine-print">Standard session of 50 minutes or longer, by video or phone. Medicare rebate with a valid GP referral and Mental Health Treatment Plan <span class="todo">[MBS items and figures to verify on MBS Online]</span>.</p>
+      </div>
+    </section>
+
+    <section class="band band-deep" aria-labelledby="medicare-title">
+      <div class="wrap">
+        <p class="proposed"><span class="sample-tag">Proposed section</span></p>
+        <h2 id="medicare-title">How the Medicare rebate works</h2>
+        <ol class="steps">
+          <li>
+            <div>
+              <h3>See your GP</h3>
+              <p>Book an appointment with your GP and ask about a Mental Health Treatment Plan. Your GP will check if it's right for you and write a referral.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Up to 10 rebated sessions a year</h3>
+              <p>Medicare covers up to 10 individual sessions each calendar year. After your first six, your GP checks in on how things are going and can refer you for more.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Claiming made simple</h3>
+              <p>You pay the session fee on the day. We lodge the Medicare claim for you, and the rebate goes into your bank account. <span class="todo">[Confirm Nurah's claiming process, e.g. Tyro Health via splose]</span></p>
+            </div>
+          </li>
+        </ol>
+        <p class="medicare-note">You don't need a referral to see a psychologist. Without one, you pay the full fee and no Medicare rebate applies. Video and phone sessions can be rebated too. <span class="todo">[Verify telehealth rebate rules]</span></p>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="funding-title">
+      <div class="wrap">
+        <p class="proposed"><span class="sample-tag">Proposed section</span></p>
+        <h2 id="funding-title">Other ways to fund your sessions</h2>
+        <div class="prose">
+          <p>Medicare isn't the only option. Depending on your situation, you may be able to use one of these.</p>
+        </div>
+        <ul class="ways fund-grid">
+          <li>
+            <h3>Private health insurance</h3>
+            <p>If your extras cover includes psychology, you may be able to claim part of each session back. Check with your fund about how much you can claim, how many sessions are covered and any waiting periods. You can claim Medicare or your health fund for a session, but not both. <span class="todo">[Confirm Nurah accepts health fund claims]</span></p>
+          </li>
+          <li>
+            <h3>Your NDIS plan</h3>
+            <p>If you're a participant in the National Disability Insurance Scheme (NDIS), psychology may be funded through your plan. Your plan manager or support coordinator can tell you what your plan includes. <span class="todo">[Confirm support category and plan types]</span></p>
+          </li>
+          <li>
+            <h3>Overseas student or visitor cover</h3>
+            <p>If you have Overseas Student Health Cover or Overseas Visitor Health Cover, you may be able to claim a rebate. Your insurer can confirm what's covered. <span class="todo">[Confirm Nurah accepts these claims]</span></p>
+          </li>
+          <li>
+            <h3>Not sure what you're covered for?</h3>
+            <p>Tell us when you get in touch. We'll explain how claiming works and help you work out your options.</p>
+          </li>
+        </ul>
+        <a class="btn btn-primary section-cta" href="#form" data-loc="funding">Book a session</a>
+      </div>
+    </section>
+
+    <section class="band band-deep" aria-labelledby="faq-title">
       <div class="wrap">
         <h2 id="faq-title">Common questions</h2>
         <div class="faq">
