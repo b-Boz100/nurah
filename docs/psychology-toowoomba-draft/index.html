@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DRAFT for internal review (15 October 2026). Sample psychologist profile and video: not a real practitioner.
+       Must not go live as is: a made-up practitioner on a live page would breach AHPRA's misleading advertising rule (s133).
+       Before going live: swap in a real psychologist, add back GTM-W38Q5FCM and the HubSpot form, and confirm every .todo item. -->
+  <title>Telehealth Psychology for Anxiety | Nurah</title>
+  <meta name="description" content="See a registered psychologist about anxiety by video or phone, from Toowoomba or anywhere in Queensland. Private and confidential. Call 1800 571 295.">
+  <!-- Ads-only landing page: kept out of search results so it doesn't compete with nurah.org.au pages. -->
+  <meta name="robots" content="noindex, nofollow">
+  <!-- TODO: confirm the subdomain before going live -->
+  <link rel="canonical" href="https://psychology.go.nurah.org.au/">
+  <meta name="theme-color" content="#FAF1E8">
+
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="images/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+  <!-- Google Tag Manager deliberately removed from this draft so review views don't count in GA4 or Google Ads. -->
+
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/montserrat-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Nurah landing page styles (template v1) */
+
+:root {
+  --cream: #FAF1E8;      /* Warm Cream: page background */
+  --cream-deep: #F3E2CF; /* cream tinted toward amber: alternate bands */
+  --paper: #FFFCF8;      /* form and card surfaces */
+  --amber: #D49429;      /* Deep Amber: primary brand signal */
+  --amber-ink: #8A5A0E;  /* darkened amber for small text on cream (AA contrast) */
+  --yellow: #F5C843;     /* Sunlight Yellow: hero glow only */
+  --pink: #DBA3CA;       /* Muted Pink: hero glow only */
+  --ink: #000000;        /* all body text is black */
+  --ink-soft: #000000;
+  --line: #E6D3BE;
+  --green: #657E31;      /* nurah.org.au enquiry-block green (not in brand palette) */
+
+  --font: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wrap: 72rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --radius-lg: 1.5rem;
+  --radius-sm: 0.625rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  position: relative;
+  overflow-x: clip; /* contains the hero glow without creating a scroll box */
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--ink); text-underline-offset: 0.2em; }
+
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+
+.skip {
+  position: absolute; left: -999px; top: 0;
+  background: var(--ink); color: var(--cream); padding: 0.75rem 1rem; z-index: 100;
+}
+.skip:focus { left: 1rem; top: 1rem; }
+
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+h1, h2, h3 { margin: 0; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.625rem, 3.2vw, 2.25rem); max-width: 22ch; }
+h3 { font-size: 1.125rem; line-height: 1.35; }
+p { margin: 0; }
+.prose { max-width: 62ch; }
+.prose > * + * { margin-top: 1em; }
+
+/* Placeholder marker: anything still to confirm before going live */
+.todo {
+  background: #FFF3C4;
+  outline: 1px dashed var(--amber);
+  color: var(--ink);
+  padding: 0 0.25em;
+  border-radius: 3px;
+}
+
+/* ---------- Header ---------- */
+.site-header { padding: 1.125rem 0; position: relative; z-index: 2; }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.logo img { width: 8.5rem; }
+.header-call {
+  font-weight: 600; font-size: 0.9375rem; color: var(--ink); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px;
+  padding: 0.375rem 1.125rem; border: 2px solid var(--ink); border-radius: 999px;
+  transition: background-color .2s;
+}
+.header-call:hover { background: rgba(0, 0, 0, 0.06); }
+.header-call svg { width: 1.125rem; height: 1.125rem; color: var(--amber); }
+.header-call span { display: none; }
+@media (min-width: 40em) { .header-call span { display: inline; } }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 3.25rem; padding: 0.75rem 1.5rem;
+  border-radius: 999px; border: 2px solid transparent;
+  font: 600 1rem/1.2 var(--font); text-decoration: none; cursor: pointer;
+  transition: background-color .2s, border-color .2s;
+}
+.btn svg { width: 1.125rem; height: 1.125rem; }
+.btn-primary { background: var(--amber); color: var(--ink); }
+.btn-primary:hover { background: #C4851C; }
+.btn-quiet { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-quiet:hover { background: rgba(0, 0, 0, 0.06); }
+.btn-green { background: var(--green); color: #FFFFFF; }
+.btn-green:hover { background: #536928; }
+.btn-light { background: transparent; color: #FFFFFF; border-color: #FFFFFF; }
+.btn-light:hover { background: #FFFFFF; color: var(--green); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; padding: 1.5rem 0 3.5rem; }
+
+/* The signature: soft light rising behind the headline. Nurah means light. */
+.hero-light {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: min(62rem, 150vw); aspect-ratio: 1;
+  right: -45vw; top: max(-31rem, -75vw);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(245, 200, 67, 0.55) 0%,
+      rgba(212, 148, 41, 0.28) 30%,
+      rgba(219, 163, 202, 0.18) 52%,
+      rgba(250, 241, 232, 0) 70%);
+  animation: dawn 2.4s ease-out both;
+}
+@keyframes dawn {
+  from { opacity: 0; transform: translateY(8%) scale(0.92); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero .wrap { position: relative; z-index: 1; display: grid; gap: 2.5rem; align-items: start; }
+
+.hero h1 {
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 14ch;
+}
+.hero-lede { margin-top: 1.25rem; max-width: 44ch; font-size: 1.1875rem; color: var(--ink); }
+.hero-actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+.assurances {
+  list-style: none; padding: 0; margin: 1.75rem 0 0;
+  display: flex; flex-direction: column; gap: 0.625rem;
+  font-size: 0.9375rem; font-weight: 600; color: var(--ink-soft);
+}
+.assurances li { display: flex; align-items: center; gap: 0.5rem; }
+.assurances svg { width: 1.125rem; height: 1.125rem; color: var(--amber); flex: none; }
+
+@media (min-width: 60em) {
+  .hero { padding: 2.5rem 0 2.5rem; }
+  .hero .wrap { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .hero-light { right: -14rem; top: -28rem; }
+}
+
+/* ---------- Form panel (iframe slot) ---------- */
+.form-panel {
+  background: var(--paper);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  box-shadow: 0 1px 0 var(--line), 0 24px 48px -28px rgba(138, 90, 14, 0.35);
+}
+.form-panel h2 { font-size: 1.375rem; }
+.form-panel > p { margin-top: 0.5rem; color: var(--ink-soft); font-size: 0.9375rem; }
+/* HubSpot form embed. min-height reserves space so the page doesn't jump while the form loads */
+/* Negative side margin cancels the padding HubSpot adds inside the form, so fields use the full panel width */
+.form-slot { margin: 0.75rem -1rem 0; min-height: 44rem; }
+@media (min-width: 60em) { .form-slot { min-height: 36rem; } }
+.form-slot iframe { width: 100%; border: 0; }
+
+/* The single form: every "Get in touch" button jumps here */
+.form-panel { scroll-margin-top: 1rem; }
+
+/* ---------- Sections ---------- */
+.band { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.band-deep { background: var(--cream-deep); }
+.hero + .band { padding-top: clamp(2rem, 4vw, 3.5rem); }
+.band h2 + * { margin-top: 1.25rem; }
+
+.split { display: grid; gap: 2rem; }
+.section-cta { margin-top: 2.25rem; }
+
+/* Image slot with rounded corners (swap the placeholder for an <img>) */
+.media-slot {
+  aspect-ratio: 3 / 2; width: 100%;
+  border-radius: var(--radius-lg); overflow: hidden;
+  background: linear-gradient(160deg, var(--cream-deep), #EBC9A0);
+  display: grid; place-content: center; text-align: center;
+  color: var(--ink-soft); font-size: 0.875rem; padding: 1rem;
+}
+.media-slot:has(img) { padding: 0; background: none; }
+.media-slot img { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 60em) { .media-slot + div { align-self: center; } }
+@media (min-width: 60em) { .split { grid-template-columns: 0.9fr 1.1fr; gap: 4rem; } }
+
+/* How we can work together: a quiet list with an amber rule, not cards */
+.ways { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.75rem; }
+.ways li { border-left: 3px solid var(--amber); padding-left: 1.25rem; }
+.ways p { margin-top: 0.375rem; color: var(--ink-soft); max-width: 52ch; }
+
+/* ---------- Practitioner ---------- */
+.practitioner { display: grid; gap: 2rem; align-items: center; }
+.portrait {
+  aspect-ratio: 4 / 5; width: 100%; max-width: 20rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--cream-deep);
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.practitioner .role { margin-top: 0.25rem; color: var(--ink); font-weight: 600; }
+.practitioner .prose { margin-top: 1.25rem; }
+.focus-list { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.focus-list li {
+  background: var(--cream-deep); border-radius: 999px;
+  padding: 0.375rem 0.875rem; font-size: 0.875rem; font-weight: 600;
+}
+@media (min-width: 48em) { .practitioner { grid-template-columns: 20rem 1fr; gap: 4rem; } }
+
+/* Two practitioners side by side: one card each, stacked on mobile */
+.practitioner-pair { display: grid; gap: 3rem; margin-top: 2.5rem; }
+.practitioner-card .portrait { max-width: 16rem; }
+.practitioner-card h3 { margin-top: 1.5rem; font-size: 1.375rem; }
+.practitioner-card .role { margin-top: 0.25rem; font-weight: 600; }
+.practitioner-card .prose { margin-top: 1rem; }
+.practitioner-card .focus-list { margin-top: 1.25rem; }
+/* No photo yet: a soft placeholder the same shape as a portrait */
+.portrait-empty { display: grid; place-content: center; text-align: center; padding: 1rem; font-size: 0.875rem; }
+@media (min-width: 48em) { .practitioner-pair { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+
+/* ---------- Steps (a real sequence, so numbered) ---------- */
+.steps { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; gap: 2rem; counter-reset: step; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; align-items: start; align-content: start; }
+.steps li::before {
+  content: counter(step);
+  width: 3rem; height: 3rem; border-radius: 50%;
+  background: var(--amber); color: var(--ink);
+  display: grid; place-content: center; font-weight: 700; font-size: 1.125rem;
+}
+.steps p { margin-top: 0.375rem; color: var(--ink-soft); }
+.step-cta { margin-top: 1.25rem; min-height: 2.75rem; padding: 0.5rem 1.25rem; font-size: 0.9375rem; }
+@media (min-width: 48em) {
+  .steps { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+  .steps li { grid-template-columns: 1fr; }
+}
+
+/* ---------- Fees (switch on by removing the hidden attribute) ---------- */
+.fees { margin-top: 2rem; background: var(--paper); border-radius: var(--radius-sm); padding: 1.5rem; max-width: 34rem; }
+
+/* ---------- FAQ ---------- */
+.faq { margin-top: 2rem; max-width: 46rem; border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  list-style: none; cursor: pointer; min-height: 44px;
+  padding: 1.125rem 2.5rem 1.125rem 0; position: relative;
+  font-weight: 600; font-size: 1.0625rem;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: ""; position: absolute; right: 0.5rem; top: 50%;
+  width: 0.625rem; height: 0.625rem; margin-top: -0.4rem;
+  border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg); transition: transform .2s;
+}
+.faq details[open] summary::after { transform: rotate(-135deg); margin-top: -0.1rem; }
+.faq details p { padding: 0 0 1.25rem; color: var(--ink-soft); max-width: 60ch; }
+
+/* ---------- Enquire: image + green panel, full width ---------- */
+.enquire { display: grid; background: var(--green); color: #FFFFFF; }
+.enquire-media { min-height: 16rem; }
+.enquire-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.enquire-body { padding: clamp(3rem, 7vw, 6rem) var(--gutter); align-self: center; }
+.enquire h2 { color: #FFFFFF; }
+.enquire p { margin-top: 1rem; max-width: 40ch; font-size: 1.125rem; }
+.enquire a:not(.btn) { color: #FFFFFF; }
+.enquire .btn { margin-top: 1.75rem; }
+.enquire :focus-visible { outline-color: #FFFFFF; }
+@media (min-width: 60em) {
+  .enquire { grid-template-columns: 1fr 1fr; }
+  .enquire-media { min-height: 28rem; }
+  .enquire-body { padding-left: 7%; padding-right: 7%; }
+}
+
+/* ---------- Support note: full-width white row, centred ---------- */
+.support-band { background: #FFFFFF; padding: 2rem 0; text-align: center; }
+.support-note { margin: 0 auto; max-width: 46rem; font-size: 0.9375rem; }
+
+/* ---------- Commitments band (replicates nurah.org.au) ---------- */
+.commitments { background: #EFEFEF; padding: clamp(3rem, 5vw, 4.5rem) 0; font-size: 0.875rem; line-height: 1.6; }
+.commitments-grid { display: grid; gap: 2.5rem; }
+.commitments img { height: 46px; width: auto; }
+.commitments h2 { font-size: 1.25rem; margin: 1.25rem 0 0.75rem; max-width: none; }
+.commitments a, .site-footer a { color: var(--ink); }
+@media (min-width: 40em) { .commitments-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 64em) { .commitments-grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+
+/* ---------- Site footer (replicates nurah.org.au) ---------- */
+.site-footer { background: #FDF4ED; padding: clamp(3.5rem, 7vw, 5.5rem) 0 7rem; font-size: 0.9375rem; }
+.footer-grid { display: grid; gap: 2.5rem; }
+.footer-brand img { width: 14rem; }
+.footer-brand p { margin-top: 1rem; max-width: 34ch; }
+.site-footer h2 { font-size: 1.125rem; margin-bottom: 0.875rem; max-width: none; }
+.site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.footer-actions { margin-top: 1rem; font-weight: 600; line-height: 2; }
+.copyright { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.875rem; }
+@media (min-width: 40em) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 64em) {
+  .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 3rem; }
+  .site-footer { padding-bottom: 3rem; }
+}
+
+/* ---------- Mobile action bar ---------- */
+.action-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+  padding: 0.625rem var(--gutter) calc(0.625rem + env(safe-area-inset-bottom));
+  background: rgba(250, 241, 232, 0.96);
+  border-top: 1px solid var(--line);
+}
+.action-bar .btn { min-height: 3rem; padding: 0.5rem 1rem; }
+@media (min-width: 60em) { .action-bar { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-light { animation: none; }
+  .btn, .faq summary::after { transition: none; }
+}
+
+.loc-line { margin: 0 0 0.75rem; font-weight: 600; color: var(--amber-ink); }
+
+/* ---------- Draft-only additions ---------- */
+.draft-bar {
+  background: #FFF3C4; border-bottom: 1px dashed var(--amber);
+  padding: 0.625rem var(--gutter); text-align: center;
+  font-size: 0.875rem; font-weight: 600; position: relative; z-index: 3;
+}
+.sample-tag {
+  display: inline-block; margin-left: 0.5rem; vertical-align: middle;
+  background: #FFF3C4; outline: 1px dashed var(--amber); border-radius: 999px;
+  padding: 0.125rem 0.625rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em;
+}
+
+/* Intro video under the three hero points */
+.intro-video { margin: 1.75rem 0 0; max-width: 34rem; }
+.intro-video video,
+.video-slot {
+  width: 100%; aspect-ratio: 16 / 9; display: block;
+  border-radius: var(--radius-sm); background: #1A1A1A;
+  box-shadow: 0 1px 0 var(--line), 0 18px 36px -24px rgba(138, 90, 14, 0.45);
+}
+.video-slot {
+  background: linear-gradient(160deg, var(--cream-deep), #EBC9A0);
+  display: grid; place-content: center; justify-items: center; gap: 0.5rem;
+  text-align: center; padding: 1rem; font-size: 0.875rem;
+}
+.video-slot svg { width: 2.5rem; height: 2.5rem; color: var(--amber-ink); }
+/* The supplied video is square (960x960), so the frame is square too: nothing gets cropped */
+.intro-video { max-width: 22rem; }
+.intro-video video { aspect-ratio: 1 / 1; object-fit: cover; }
+.intro-video figcaption { margin-top: 0.625rem; font-size: 0.875rem; font-weight: 600; }
+
+/* Mock form: stands in for the HubSpot embed so draft submissions can't create real leads */
+.form-mock { margin-top: 1.25rem; display: grid; gap: 1rem; }
+.form-mock label { display: grid; gap: 0.375rem; font-size: 0.9375rem; font-weight: 600; }
+.form-mock .field {
+  min-height: 3rem; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: #FFFFFF;
+}
+.form-mock .field-tall { min-height: 6rem; }
+.form-mock .btn { justify-self: start; }
+.form-mock .mock-note { font-size: 0.8125rem; }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m23 7-7 5 7 5V7zM3 5h11a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zm2 0V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM10 8l6 4-6 4V8z"/></symbol>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="draft-bar" role="note">Draft for internal review, 15 October 2026. The psychologist profile and video are samples, not a real practitioner. Not for publishing.</div>
+
+  <div class="hero-light" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <span class="logo"><img src="images/nurah-logo.png" alt="Nurah" width="480" height="122"></span>
+      <a class="header-call call-link" href="tel:1800571295" data-loc="header">
+        <svg aria-hidden="true"><use href="#i-phone"/></svg>
+        <span>Call</span> 1800 571 295
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div>
+          <!-- Telehealth framing only. Never "Toowoomba psychologist" or "near me": Nurah has no clinic there (AHPRA s133). -->
+          <p class="loc-line">Telehealth psychology for Toowoomba</p>
+          <h1 id="hero-title">Support for anxiety, from wherever you are</h1>
+          <p class="hero-lede">See a registered psychologist by video or phone. We'll work with you to understand your anxiety and find ways to manage it, at a pace that feels right for you.</p>
+          <ul class="assurances">
+            <li><svg aria-hidden="true"><use href="#i-video"/></svg>Video or phone sessions</li>
+            <li><svg aria-hidden="true"><use href="#i-lock"/></svg>Private and confidential</li>
+            <li><svg aria-hidden="true"><use href="#i-person"/></svg>For adults 18+</li>
+          </ul>
+
+          <!-- Intro video from the psychologist. SAMPLE video (likely AI-generated): internal review only.
+               Before going live: real psychologist's video, plus a captions file:
+               <track kind="captions" src="video/psychologist-intro.vtt" srclang="en" label="English" default> -->
+          <figure class="intro-video">
+            <video controls preload="metadata" playsinline poster="images/psychologist.jpg" aria-label="Intro video from Alex, one of our psychologists">
+              <source src="video/psychologist-intro.mp4" type="video/mp4">
+            </video>
+            <figcaption>Meet Alex, one of our psychologists <span class="sample-tag">Sample</span></figcaption>
+          </figure>
+        </div>
+
+        <!-- Mock form for the draft. When going live, replace with the HubSpot embed used on the Counselling page
+             (or a Psychology-specific form), which redirects to https://nurah.org.au/thanks/ where the conversion fires. -->
+        <aside class="form-panel" id="form" aria-labelledby="form-title">
+          <h2 id="form-title">Get in touch</h2>
+          <p>We'll get back to you within one business day.</p>
+          <div class="form-mock" aria-hidden="true">
+            <label>First name<span class="field"></span></label>
+            <label>Phone<span class="field"></span></label>
+            <label>Email<span class="field"></span></label>
+            <label>How can we help?<span class="field field-tall"></span></label>
+            <span class="btn btn-primary">Send</span>
+            <p class="mock-note"><span class="todo">Form preview only. The live HubSpot form goes here.</span></p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="feels-title">
+      <div class="wrap split">
+        <div class="media-slot">
+          <img src="images/counselling-telehealth.webp" alt="A woman sitting on her couch at home, smiling as she talks with someone on her laptop" width="1000" height="667" loading="lazy">
+        </div>
+        <div>
+          <h2 id="feels-title">Anxiety can show up in lots of ways</h2>
+          <div class="prose">
+            <p>You might notice racing thoughts, a tight chest or trouble sleeping. You might find yourself avoiding places or people, or feeling on edge without knowing why.</p>
+            <p>Anxiety is common. It can build slowly over time or arrive after a big change, and it doesn't always have a clear cause.</p>
+            <p>Talking with a psychologist can help you make sense of what's happening and what might help.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band-deep" aria-labelledby="ways-title">
+      <div class="wrap split">
+        <h2 id="ways-title">How we can work together</h2>
+        <div>
+          <ul class="ways">
+            <li>
+              <h3>Understand what's going on</h3>
+              <p>Together, we look at what sets off your anxiety, how it affects your day and what you'd like to change.</p>
+            </li>
+            <li>
+              <h3>Build skills that fit your life</h3>
+              <p>Psychologists use approaches like cognitive behavioural therapy (CBT). We work with you on practical strategies you can use at work, at home and in the moments that feel hardest.</p>
+            </li>
+            <li>
+              <h3>Go at your own pace</h3>
+              <p>You choose what we focus on and when. Progress looks different for everyone.</p>
+            </li>
+          </ul>
+          <a class="btn btn-primary section-cta" href="#form" data-loc="work-together">Get in touch</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="psych-title">
+      <div class="wrap practitioner">
+        <!-- SAMPLE photo (likely AI-generated): internal review only. Replace with a real photo of the real psychologist before going live. -->
+        <div class="portrait">
+          <img src="images/psychologist.jpg" alt="Alex Sample, psychologist at Nurah" width="800" height="800" loading="lazy">
+        </div>
+        <div>
+          <h2 id="psych-title">Meet Alex <span class="sample-tag">Sample profile</span></h2>
+          <p class="role">Alex Sample, Registered Psychologist</p>
+          <div class="prose">
+            <p>Alex works with adults who are living with anxiety, stress and worry. Sessions are calm, practical and shaped around what matters to you.</p>
+            <p>Alex draws on approaches like cognitive behavioural therapy (CBT) and acceptance and commitment therapy (ACT). Together, you'll work on strategies that fit your everyday life, whether that's managing worry at work, sleeping better or feeling more confident in social situations.</p>
+            <p><span class="todo">[AHPRA registration number]</span></p>
+          </div>
+          <ul class="focus-list" aria-label="How Alex can help">
+            <li>Anxiety and Worry</li>
+            <li>Stress and Burnout</li>
+            <li>Panic</li>
+            <li>Social Anxiety</li>
+            <li>Life Transitions</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band-deep" aria-labelledby="steps-title">
+      <div class="wrap">
+        <h2 id="steps-title">How it works</h2>
+        <ol class="steps">
+          <li>
+            <div>
+              <h3>Get in touch</h3>
+              <p>Fill in the form or give us a call. We'll get back to you within one business day.</p>
+              <a class="btn btn-green step-cta" href="#form" data-loc="how-it-works">Get in touch</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Choose a time that suits you</h3>
+              <p>We'll offer you a few appointment times to choose from. Your sessions happen by video or phone, from wherever you feel comfortable.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Your first session</h3>
+              <p>Sessions run for about <span class="todo">[50]</span> minutes. The first one is a chance to talk about what's going on and see if we're the right fit.</p>
+            </div>
+          </li>
+        </ol>
+
+        <!-- FEES: remove the hidden attribute once Psychology pricing and bulk billing are decided -->
+        <div class="fees" hidden>
+          <h3>Fees</h3>
+          <p><span class="todo">[Session fee and Medicare rebate]</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="faq-title">
+      <div class="wrap">
+        <h2 id="faq-title">Common questions</h2>
+        <div class="faq">
+          <details>
+            <summary>Do I need to live in Brisbane?</summary>
+            <p>No. All sessions are by video or phone, so you can join from Toowoomba or anywhere in Queensland. Our office is in Brisbane, and there's no need to travel.</p>
+          </details>
+          <details>
+            <summary>Do I need a referral from my GP?</summary>
+            <p><span class="todo">[To confirm once the Psychology pricing and Medicare model is decided. Cover whether people can self-refer, and how a GP Mental Health Treatment Plan works.]</span></p>
+          </details>
+          <details>
+            <summary>How much does it cost?</summary>
+            <p><span class="todo">[To confirm once Psychology pricing and bulk billing are decided.]</span> Get in touch and we'll let you know the current fee.</p>
+          </details>
+          <details>
+            <summary>What's the difference between a psychologist and a counsellor?</summary>
+            <p>Psychologists are registered with the Psychology Board of Australia and trained in assessing and treating mental health concerns. Counsellors offer talk-based support too. If you're not sure which is right for you, give us a call and we'll talk it through.</p>
+          </details>
+          <details>
+            <summary>Is it confidential?</summary>
+            <p>Yes. What you share is kept private. There are a few rare exceptions, like when someone's safety is at risk or the law requires us to share information. Your psychologist will explain these in your first session.</p>
+          </details>
+          <details>
+            <summary>What do I need for a telehealth session?</summary>
+            <p>You'll need a quiet, private space and a phone, tablet or computer. For video sessions, your device will need a camera. Before your first session, we'll send you a link to join and simple instructions.</p>
+          </details>
+          <details>
+            <summary>What if I'm not sure I'm ready?</summary>
+            <p>That's okay. You're welcome to call and ask questions first. There's no pressure to book.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="enquire" aria-labelledby="enquire-title">
+      <div class="enquire-media">
+        <img src="images/nurah-banner.webp" alt="A smiling young woman with her arms crossed, framed by the Nurah symbol" width="1100" height="669" loading="lazy">
+      </div>
+      <div class="enquire-body">
+        <h2 id="enquire-title">Nurah is here when you're ready</h2>
+        <p>Send us a <a href="mailto:hello@nurah.org.au" data-loc="enquire-banner">message</a> or call <a class="call-link" href="tel:1800571295" data-loc="enquire-banner">1800 571 295</a>. We'll take it from there, together.</p>
+        <a class="btn btn-light" href="#form" data-loc="enquire-banner">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="support-band">
+    <div class="wrap">
+      <p class="support-note">If you need support right now, call Lifeline on <a href="tel:131114">13 11 14</a> any time, day or night. In an emergency, call <a href="tel:000">000</a>.</p>
+    </div>
+  </div>
+
+  <section class="commitments" aria-label="Our commitments">
+    <div class="wrap commitments-grid">
+      <div>
+        <img src="images/ack-flags.webp" alt="Aboriginal and Torres Strait Islander flags" width="149" height="46" loading="lazy">
+        <h2>Acknowledgement</h2>
+        <p>Nurah acknowledges Aboriginal and Torres Strait Islander peoples as Australia's First People and Traditional Custodians. We value their cultures, identities, and continuing connection to country, waters, kin and community. We pay our respects to Elders past and present and are committed to making a positive contribution to the wellbeing of Aboriginal and Torres Strait Islander peoples, by providing services that are welcoming, safe, culturally appropriate and inclusive.</p>
+      </div>
+      <div>
+        <img src="images/flag-diversity.webp" alt="Progress Pride flag" width="68" height="46" loading="lazy">
+        <h2>Diversity and inclusion</h2>
+        <p>Nurah is committed to embracing diversity and removing all forms of discrimination from the health services we provide. We welcome everyone, whatever their culture, ethnicity, faith, sexual orientation or gender identity.</p>
+      </div>
+      <div>
+        <img src="images/flag-accessibility.webp" alt="Accessibility symbol" width="68" height="46" loading="lazy">
+        <h2>Accessibility</h2>
+        <p>Nurah is committed to ensuring digital accessibility for people living with disability. We are continually improving the user experience for everyone, and applying the relevant accessibility standards. <a href="https://nurah.org.au/accessibility-statement/">View our accessibility statement</a>.</p>
+      </div>
+      <div>
+        <img src="images/privacy.webp" alt="Padlock icon" width="68" height="46" loading="lazy">
+        <h2>Privacy</h2>
+        <p>Our <a href="https://nurah.org.au/privacy-policy/">Privacy Policy</a> explains how we collect, store, use and share your personal information, including health information, in line with Australian privacy law.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="images/nurah-logo-footer.webp" alt="Nurah. Where clarity and support begin" width="560" height="133" loading="lazy">
+        <p>Counselling, psychology and behaviour support for NDIS participants and private clients. Warm, professional, and built around you.</p>
+        <p>Powered by <a href="https://nurah.org.au/about-us/coact/">CoAct</a></p>
+      </div>
+      <div>
+        <h2>Head office</h2>
+        <p>Nurah (CoAct)<br>Level 1, 416 Logan Rd<br>Greenslopes<br>QLD 4120</p>
+        <p class="footer-actions"><a href="https://nurah.org.au/contact-us/">Make an enquiry</a><br><a href="https://nurah.org.au/for-referrers/">Make a referral</a></p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          <li><a href="https://nurah.org.au/behaviour-support/">Behaviour Support</a></li>
+          <li><a href="https://nurah.org.au/counselling-services/">Counselling</a></li>
+          <li><a href="https://nurah.org.au/psychology-services/">Psychology</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Links</h2>
+        <ul>
+          <li><a href="https://nurah.org.au/contact-us/">Contact us</a></li>
+          <li><a href="https://nurah.org.au/about-us/">About us</a></li>
+          <li><a href="https://nurah.org.au/about-us/join-our-team/">Join our team</a></li>
+          <li><a href="https://coact.org.au/wp-content/uploads/2026/07/Privacy_Policy_16_7_26.pdf">Privacy policy</a></li>
+          <li><a href="https://nurah.org.au/complaints-feedback/">Complaints &amp; feedback</a></li>
+          <li><a href="https://nurah.org.au/accessibility-statement/">Accessibility statement</a></li>
+          <li><a href="https://nurah.org.au/disclaimer/">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="copyright">&copy; 2026 Nurah.</p>
+    </div>
+  </footer>
+
+  <nav class="action-bar" aria-label="Quick contact">
+    <a class="btn btn-quiet call-link" href="tel:1800571295" data-loc="mobile-bar"><svg aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
+    <a class="btn btn-primary" href="#form" data-loc="mobile-bar">Get in touch</a>
+  </nav>
+</body>
+</html>
