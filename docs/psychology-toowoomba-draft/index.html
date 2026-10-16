@@ -387,6 +387,11 @@ p { margin: 0; }
 .intro-video video { aspect-ratio: 1 / 1; object-fit: cover; }
 .intro-video figcaption { margin-top: 0.625rem; font-size: 0.875rem; font-weight: 600; }
 
+/* Medicare badge left of the header phone button, about 60% of the button's height */
+.header-right { display: flex; align-items: center; gap: 0.875rem; }
+.medicare-badge { height: 1.625rem; width: auto; }
+@media (max-width: 29.99em) { .medicare-badge { display: none; } } /* no room beside the button on small phones */
+
 /* Fourth hero point: anchor link down to the fees section */
 .assurance-link { color: var(--ink); text-decoration: underline; text-decoration-color: var(--amber); text-decoration-thickness: 2px; }
 .assurance-link:hover { text-decoration-color: var(--ink); }
@@ -436,10 +441,15 @@ p { margin: 0; }
   <header class="site-header">
     <div class="wrap">
       <span class="logo"><img src="images/nurah-logo.png" alt="Nurah" width="480" height="122"></span>
-      <a class="header-call call-link" href="tel:1800571295" data-loc="header">
-        <svg aria-hidden="true"><use href="#i-phone"/></svg>
-        <span>Call</span> 1800 571 295
-      </a>
+      <div class="header-right">
+        <!-- Medicare logo: placeholder for the draft. Before going live, use the official file and check
+             Services Australia's rules for displaying it. -->
+        <img class="medicare-badge" src="images/medicare-logo.png" alt="Medicare" width="270" height="67">
+        <a class="header-call call-link" href="tel:1800571295" data-loc="header">
+          <svg aria-hidden="true"><use href="#i-phone"/></svg>
+          <span>Call</span> 1800 571 295
+        </a>
+      </div>
     </div>
   </header>
 
