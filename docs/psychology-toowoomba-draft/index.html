@@ -392,6 +392,10 @@ p { margin: 0; }
 .medicare-badge { height: 1.625rem; width: auto; }
 @media (max-width: 29.99em) { .medicare-badge { display: none; } } /* no room beside the button on small phones */
 
+/* Meet Alex: square video in place of the portrait photo (the video is 960x960) */
+.portrait-video { aspect-ratio: 1 / 1; background: #1A1A1A; }
+.portrait-video video { width: 100%; height: 100%; display: block; object-fit: cover; }
+
 /* Fourth hero point: anchor link down to the fees section */
 .assurance-link { color: var(--ink); text-decoration: underline; text-decoration-color: var(--amber); text-decoration-thickness: 2px; }
 .assurance-link:hover { text-decoration-color: var(--ink); }
@@ -533,9 +537,11 @@ p { margin: 0; }
 
     <section class="band" aria-labelledby="psych-title">
       <div class="wrap practitioner">
-        <!-- SAMPLE photo (likely AI-generated): internal review only. Replace with a real photo of the real psychologist before going live. -->
-        <div class="portrait">
-          <img src="images/psychologist.jpg" alt="Alex Sample, psychologist at Nurah" width="800" height="800" loading="lazy">
+        <!-- SAMPLE video (likely AI-generated): internal review only. Replace with the real psychologist before going live. -->
+        <div class="portrait portrait-video">
+          <video controls preload="none" playsinline poster="images/psychologist.jpg" aria-label="Video introduction from Alex Sample, psychologist at Nurah">
+            <source src="video/psychologist-intro.mp4" type="video/mp4">
+          </video>
         </div>
         <div>
           <h2 id="psych-title">Meet Alex <span class="sample-tag">Sample profile</span></h2>
