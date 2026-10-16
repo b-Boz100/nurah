@@ -443,6 +443,7 @@ p { margin: 0; }
     <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
     <symbol id="i-lock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zm2 0V7a5 5 0 0 1 10 0v4"/></symbol>
     <symbol id="i-person" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12l7 7 7-7"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2"/></symbol>
   </svg>
 
@@ -539,7 +540,7 @@ p { margin: 0; }
       </div>
     </section>
 
-    <section class="band" aria-labelledby="before-title">
+    <section class="band" id="before" aria-labelledby="before-title">
       <div class="wrap">
         <h2 id="before-title">Before you start</h2>
         <ul class="ways ways-3">
@@ -703,9 +704,10 @@ p { margin: 0; }
     </div>
   </footer>
 
-  <nav class="action-bar" aria-label="Quick actions">
+  <!-- Hidden once the checklist starts, shown again on Start again -->
+  <nav class="action-bar" id="action-bar" aria-label="Quick actions">
     <a class="btn btn-quiet" href="tel:1800571295" data-loc="mobile-bar"><svg aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
-    <a class="btn btn-primary" href="#checklist" data-loc="mobile-bar">Start the checklist</a>
+    <a class="btn btn-primary" href="#checklist" data-start data-loc="mobile-bar">Start the checklist</a>
   </nav>
 
   <script>
@@ -798,6 +800,8 @@ p { margin: 0; }
   var body = document.getElementById('check-body');
   var introHTML = body.innerHTML;
   var result = document.getElementById('result');
+  var before = document.getElementById('before');
+  var actionBar = document.getElementById('action-bar');
 
   function serviceItem(s) {
     return '<li><span class="svc">' + s.name + '</span>' +
@@ -884,10 +888,11 @@ p { margin: 0; }
 
     body.innerHTML =
       '<h2 id="check-title" tabindex="-1">Thanks for completing the checklist</h2>' +
-      '<p class="panel-intro">Your result is below.</p>' +
-      '<p class="panel-note"><a href="#result">Go to your result</a></p>';
+      '<p class="panel-intro">Your result is ready.</p>' +
+      '<a class="btn btn-primary" href="#result">Go to your result <svg aria-hidden="true"><use href="#i-down"/></svg></a>';
 
     result.hidden = false;
+    before.hidden = true;
     var title = document.getElementById('result-title');
     result.scrollIntoView({ block: 'start' });
     title.focus({ preventScroll: true });
@@ -896,6 +901,8 @@ p { margin: 0; }
   function restart() {
     answers = [null, null, null, null, null, null, null, null, null, null];
     result.hidden = true;
+    before.hidden = false;
+    actionBar.hidden = false;
     document.getElementById('crisis-top').innerHTML = '';
     document.getElementById('crisis-bottom').innerHTML = '';
     body.innerHTML = introHTML;
@@ -929,6 +936,8 @@ p { margin: 0; }
 
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-start]')) {
+      e.preventDefault();
+      actionBar.hidden = true;
       renderQuestion(0);
       panel.scrollIntoView({ block: 'start' });
     } else if (e.target.closest('[data-restart]')) {
