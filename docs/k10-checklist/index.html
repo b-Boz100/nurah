@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DRAFT for internal review (16 October 2026). Design doc: design.md in this folder.
+       Must not go live until Georgia Ray has signed off the result and crisis wording, and Brooke has approved the page.
+       Before going live: add back GTM-W38Q5FCM (page views only, never answers or scores) and confirm every .todo item. -->
+  <title>Wellbeing Checklist (K10) | Nurah</title>
+  <meta name="description" content="A short, private checklist about how you've been feeling over the past four weeks. 10 questions, about five minutes. Your answers stay on your device.">
+  <!-- Ads-only landing page: kept out of search results so it doesn't compete with nurah.org.au pages. -->
+  <meta name="robots" content="noindex, nofollow">
+  <!-- TODO: confirm the subdomain before going live -->
+  <link rel="canonical" href="https://wellbeing-check.go.nurah.org.au/">
+  <meta name="theme-color" content="#FAF1E8">
+
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="images/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+  <!-- Google Tag Manager deliberately left out of this draft so review views don't count in GA4 or Google Ads. -->
+
+  <link rel="preload" href="fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/montserrat-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Nurah landing page styles (template v1) */
+
+:root {
+  --cream: #FAF1E8;      /* Warm Cream: page background */
+  --cream-deep: #F3E2CF; /* cream tinted toward amber: alternate bands */
+  --paper: #FFFCF8;      /* form and card surfaces */
+  --amber: #D49429;      /* Deep Amber: primary brand signal */
+  --amber-ink: #8A5A0E;  /* darkened amber for small text on cream (AA contrast) */
+  --yellow: #F5C843;     /* Sunlight Yellow: hero glow only */
+  --pink: #DBA3CA;       /* Muted Pink: hero glow only */
+  --ink: #000000;        /* all body text is black */
+  --ink-soft: #000000;
+  --line: #E6D3BE;
+  --green: #657E31;      /* nurah.org.au enquiry-block green (not in brand palette) */
+
+  --font: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wrap: 72rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --radius-lg: 1.5rem;
+  --radius-sm: 0.625rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  position: relative;
+  overflow-x: clip; /* contains the hero glow without creating a scroll box */
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--ink); text-underline-offset: 0.2em; }
+
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+[tabindex="-1"]:focus { outline: none; }
+
+.skip {
+  position: absolute; left: -999px; top: 0;
+  background: var(--ink); color: var(--cream); padding: 0.75rem 1rem; z-index: 100;
+}
+.skip:focus { left: 1rem; top: 1rem; }
+
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+h1, h2, h3 { margin: 0; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.625rem, 3.2vw, 2.25rem); max-width: 22ch; }
+h3 { font-size: 1.125rem; line-height: 1.35; }
+p { margin: 0; }
+.prose { max-width: 62ch; }
+.prose > * + * { margin-top: 1em; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Placeholder marker: anything still to confirm before going live */
+.todo {
+  background: #FFF3C4;
+  outline: 1px dashed var(--amber);
+  color: var(--ink);
+  padding: 0 0.25em;
+  border-radius: 3px;
+}
+
+/* ---------- Draft bar and support strip ---------- */
+.draft-bar {
+  background: #FFF3C4; border-bottom: 1px dashed var(--amber);
+  padding: 0.625rem var(--gutter); text-align: center;
+  font-size: 0.875rem; font-weight: 600; position: relative; z-index: 3;
+}
+.support-strip {
+  background: #FFFFFF; border-bottom: 1px solid var(--line);
+  padding: 0.5rem var(--gutter); text-align: center;
+  font-size: 0.875rem; font-weight: 600; position: relative; z-index: 3;
+}
+
+/* ---------- Header ---------- */
+.site-header { padding: 1.125rem 0; position: relative; z-index: 2; }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.logo img { width: 8.5rem; }
+.header-call {
+  font-weight: 600; font-size: 0.9375rem; color: var(--ink); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px;
+  padding: 0.375rem 1.125rem; border: 2px solid var(--ink); border-radius: 999px;
+  transition: background-color .2s;
+}
+.header-call:hover { background: rgba(0, 0, 0, 0.06); }
+.header-call svg { width: 1.125rem; height: 1.125rem; color: var(--amber); }
+.header-call span { display: none; }
+@media (min-width: 40em) { .header-call span { display: inline; } }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 3.25rem; padding: 0.75rem 1.5rem;
+  border-radius: 999px; border: 2px solid transparent;
+  font: 600 1rem/1.2 var(--font); text-decoration: none; cursor: pointer;
+  transition: background-color .2s, border-color .2s, opacity .2s;
+}
+.btn svg { width: 1.125rem; height: 1.125rem; }
+.btn-primary { background: var(--amber); color: var(--ink); }
+.btn-primary:hover { background: #C4851C; }
+.btn-quiet { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-quiet:hover { background: rgba(0, 0, 0, 0.06); }
+.btn-light { background: transparent; color: #FFFFFF; border-color: #FFFFFF; }
+.btn-light:hover { background: #FFFFFF; color: var(--green); }
+.btn-small { min-height: 2.875rem; padding: 0.5rem 1.25rem; font-size: 0.9375rem; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.btn-primary[disabled]:hover { background: var(--amber); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; padding: 1.5rem 0 3.5rem; }
+
+/* The signature: soft light rising behind the headline. Nurah means light. */
+.hero-light {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: min(62rem, 150vw); aspect-ratio: 1;
+  right: -45vw; top: max(-31rem, -75vw);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(245, 200, 67, 0.55) 0%,
+      rgba(212, 148, 41, 0.28) 30%,
+      rgba(219, 163, 202, 0.18) 52%,
+      rgba(250, 241, 232, 0) 70%);
+  animation: dawn 2.4s ease-out both;
+}
+@keyframes dawn {
+  from { opacity: 0; transform: translateY(8%) scale(0.92); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero .wrap { position: relative; z-index: 1; display: grid; gap: 2.5rem; align-items: start; }
+
+.hero h1 {
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 14ch;
+}
+.hero-lede { margin-top: 1.25rem; max-width: 44ch; font-size: 1.1875rem; color: var(--ink); }
+.hero-actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+.assurances {
+  list-style: none; padding: 0; margin: 1.75rem 0 0;
+  display: flex; flex-direction: column; gap: 0.625rem;
+  font-size: 0.9375rem; font-weight: 600; color: var(--ink-soft);
+}
+.assurances li { display: flex; align-items: center; gap: 0.5rem; }
+.assurances svg { width: 1.125rem; height: 1.125rem; color: var(--amber); flex: none; }
+
+.loc-line { margin: 0 0 0.75rem; font-weight: 600; color: var(--amber-ink); }
+
+@media (min-width: 60em) {
+  .hero { padding: 2.5rem 0 2.5rem; }
+  .hero .wrap { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .hero-light { right: -14rem; top: -28rem; }
+}
+
+/* ---------- Checklist panel (sits where the form sits in the template) ---------- */
+.check-panel {
+  background: var(--paper);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  box-shadow: 0 1px 0 var(--line), 0 24px 48px -28px rgba(138, 90, 14, 0.35);
+  scroll-margin-top: 1rem;
+}
+.check-panel h2 { font-size: 1.375rem; }
+.check-panel .panel-intro { margin-top: 0.75rem; font-size: 0.9375rem; }
+.check-panel .panel-intro + .btn { margin-top: 1.5rem; }
+.panel-note { margin-top: 1.25rem; font-size: 0.875rem; }
+
+.progress-text { font-size: 0.875rem; font-weight: 700; color: var(--amber-ink); }
+/* Ten segments: answered ones fill amber, the current one is darker */
+.progress-steps { margin-top: 0.625rem; display: flex; gap: 4px; }
+.progress-steps span { flex: 1; height: 10px; border-radius: 999px; background: var(--line); transition: background-color .2s; }
+.progress-steps span.done { background: var(--amber); }
+.progress-steps span.now { background: var(--amber-ink); }
+
+/* Keyboard hint: only shown while someone is using the keyboard on the answers */
+.key-hint { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.check-panel:has(.option input:focus-visible) .key-hint {
+  position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal;
+  margin-top: 0.75rem; font-size: 0.875rem;
+}
+
+.question { border: 0; padding: 0; margin: 1.5rem 0 0; min-width: 0; }
+.question legend { padding: 0; }
+.stem { display: block; font-size: 0.9375rem; font-weight: 600; }
+.q-text { display: block; margin-top: 0.375rem; font-size: 1.375rem; font-weight: 700; line-height: 1.3; }
+
+.options { margin-top: 1.25rem; display: grid; gap: 0.625rem; }
+.option {
+  display: flex; align-items: center; gap: 0.875rem;
+  min-height: 3.25rem; padding: 0.75rem 1rem;
+  background: #FFFFFF; border: 2px solid var(--line); border-radius: 0.875rem;
+  font-weight: 600; cursor: pointer;
+  transition: border-color .15s, background-color .15s;
+}
+.option:hover { border-color: var(--amber); }
+.option input { width: 1.25rem; height: 1.25rem; margin: 0; flex: none; accent-color: var(--amber-ink); cursor: pointer; }
+.option:has(input:checked) { border-color: var(--ink); background: #FFF6E6; }
+.option:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 2px; }
+.option input:focus-visible { outline: none; }
+
+.q-nav { margin-top: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+
+/* ---------- Sections ---------- */
+.band { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.band-deep { background: var(--cream-deep); }
+.hero + .band { padding-top: clamp(2rem, 4vw, 3.5rem); }
+.band h2 + * { margin-top: 1.25rem; }
+
+.split { display: grid; gap: 2rem; }
+.section-cta { margin-top: 2.25rem; }
+
+.media-slot {
+  aspect-ratio: 3 / 2; width: 100%;
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.media-slot img { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 60em) { .media-slot + div { align-self: center; } }
+@media (min-width: 60em) { .split { grid-template-columns: 0.9fr 1.1fr; gap: 4rem; } }
+
+/* A quiet list with an amber rule, not cards */
+.ways { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.75rem; }
+.ways li { border-left: 3px solid var(--amber); padding-left: 1.25rem; }
+.ways p { margin-top: 0.375rem; color: var(--ink-soft); max-width: 52ch; }
+.ways-3 { margin-top: 2.5rem; }
+@media (min-width: 48em) { .ways-3 { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
+
+/* ---------- Result ---------- */
+.result-band { background: var(--cream-deep); scroll-margin-top: 0; }
+.result-band { padding-top: clamp(2rem, 4vw, 3rem); }
+.result-wrap { display: grid; gap: 1.5rem; }
+.result-card {
+  background: var(--paper); border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  box-shadow: 0 1px 0 var(--line), 0 24px 48px -28px rgba(138, 90, 14, 0.35);
+}
+/* Full width: score and scale on the left, what it means and next steps on the right */
+.result-grid { display: grid; gap: 1.5rem; }
+@media (min-width: 60em) { .result-grid { grid-template-columns: 1fr 1.15fr; gap: 3.5rem; } }
+.result-detail .result-body { margin-top: 0; }
+.result-foot { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+@media (min-width: 60em) {
+  .result-foot { display: grid; grid-template-columns: 1fr 1.15fr; gap: 0 3.5rem; align-items: start; }
+  .result-foot .fixed-lines, .result-foot .under18 { margin-top: 0; }
+  .result-foot .result-actions, .result-foot .print-only { grid-column: 1 / -1; }
+}
+.result-eyebrow { font-weight: 700; color: var(--amber-ink); font-size: 0.9375rem; }
+.result-card h2 { margin-top: 0.5rem; max-width: 20ch; }
+.score-line { margin-top: 1.25rem; font-size: 1.125rem; }
+.score-line strong { font-size: 1.75rem; }
+
+/* Score scale: four ABS bands, sized to their score ranges (6, 6, 8 and 21 points) */
+.meter { margin-top: 1rem; position: relative; padding-top: 1.25rem; }
+.meter-bar { display: flex; gap: 3px; height: 0.75rem; }
+.meter-bar span { background: var(--line); border-radius: 3px; }
+.meter-bar span.is-current { background: var(--amber); }
+.meter-labels { display: flex; gap: 3px; margin-top: 0.5rem; font-size: 0.75rem; line-height: 1.3; }
+.meter-labels span { min-width: 0; }
+.meter-labels span.is-current { font-weight: 700; }
+.meter-marker {
+  position: absolute; top: 0; width: 0; height: 0;
+  border-left: 0.5rem solid transparent; border-right: 0.5rem solid transparent;
+  border-top: 0.75rem solid var(--ink); transform: translateX(-50%);
+}
+.seg-low { flex: 6; } .seg-moderate { flex: 6; } .seg-high { flex: 8; } .seg-very-high { flex: 21; }
+
+.result-body { margin-top: 1.5rem; }
+.result-next { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.result-next .btn { margin-top: 1rem; }
+.fixed-lines { font-size: 0.9375rem; display: grid; gap: 0.375rem; align-content: start; }
+.under18 { margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--cream); border-radius: var(--radius-sm); font-size: 0.9375rem; }
+.result-actions { margin-top: 1.75rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.print-only { display: none; }
+
+/* ---------- Crisis support box ---------- */
+.crisis {
+  background: #FFFFFF; border-radius: var(--radius-sm);
+  border-left: 6px solid var(--amber); padding: 1.25rem 1.5rem;
+}
+.crisis-full { border: 2px solid var(--ink); border-left-width: 8px; padding: 1.5rem 1.75rem; }
+.crisis h3 { font-size: 1.25rem; }
+.crisis > p { margin-top: 0.5rem; font-size: 0.9375rem; }
+.crisis-list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
+.crisis-list li { display: grid; gap: 0.125rem; align-content: start; }
+.crisis-list .svc { font-weight: 700; }
+.crisis-list .note { font-size: 0.875rem; }
+.crisis-list a { font-weight: 700; font-size: 1.125rem; justify-self: start; }
+.crisis-list .note a { font-weight: 600; font-size: inherit; }
+.crisis-full { padding: 1.5rem clamp(1.25rem, 3vw, 2.25rem); }
+.crisis-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1rem; }
+.crisis-head p { font-size: 0.9375rem; }
+@media (min-width: 40em) {
+  .crisis-full .crisis-list { grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
+}
+@media (min-width: 60em) {
+  .crisis-full .crisis-list { grid-template-columns: repeat(3, 1fr); gap: 1.25rem 2.5rem; }
+}
+.crisis details { margin-top: 1rem; }
+.crisis summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+
+/* ---------- FAQ ---------- */
+.faq { margin-top: 2rem; max-width: 46rem; border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  list-style: none; cursor: pointer; min-height: 44px;
+  padding: 1.125rem 2.5rem 1.125rem 0; position: relative;
+  font-weight: 600; font-size: 1.0625rem;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: ""; position: absolute; right: 0.5rem; top: 50%;
+  width: 0.625rem; height: 0.625rem; margin-top: -0.4rem;
+  border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg); transition: transform .2s;
+}
+.faq details[open] summary::after { transform: rotate(-135deg); margin-top: -0.1rem; }
+.faq details p { padding: 0 0 1.25rem; color: var(--ink-soft); max-width: 60ch; }
+
+/* ---------- Enquire: image + green panel, full width ---------- */
+.enquire { display: grid; background: var(--green); color: #FFFFFF; }
+.enquire-media { min-height: 16rem; }
+.enquire-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.enquire-body { padding: clamp(3rem, 7vw, 6rem) var(--gutter); align-self: center; }
+.enquire h2 { color: #FFFFFF; }
+.enquire p { margin-top: 1rem; max-width: 40ch; font-size: 1.125rem; }
+.enquire a:not(.btn) { color: #FFFFFF; }
+.enquire .btn { margin-top: 1.75rem; }
+.enquire :focus-visible { outline-color: #FFFFFF; }
+@media (min-width: 60em) {
+  .enquire { grid-template-columns: 1fr 1fr; }
+  .enquire-media { min-height: 28rem; }
+  .enquire-body { padding-left: 7%; padding-right: 7%; }
+}
+
+/* ---------- Support note: full-width white row, centred ---------- */
+.support-band { background: #FFFFFF; padding: 2rem 0; text-align: center; }
+.support-note { margin: 0 auto; max-width: 46rem; font-size: 0.9375rem; }
+
+/* ---------- Commitments band (replicates nurah.org.au) ---------- */
+.commitments { background: #EFEFEF; padding: clamp(3rem, 5vw, 4.5rem) 0; font-size: 0.875rem; line-height: 1.6; }
+.commitments-grid { display: grid; gap: 2.5rem; }
+.commitments img { height: 46px; width: auto; }
+.commitments h2 { font-size: 1.25rem; margin: 1.25rem 0 0.75rem; max-width: none; }
+.commitments a, .site-footer a { color: var(--ink); }
+@media (min-width: 40em) { .commitments-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 64em) { .commitments-grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+
+/* ---------- Site footer (replicates nurah.org.au) ---------- */
+.site-footer { background: #FDF4ED; padding: clamp(3.5rem, 7vw, 5.5rem) 0 7rem; font-size: 0.9375rem; }
+.footer-grid { display: grid; gap: 2.5rem; }
+.footer-brand img { width: 14rem; }
+.footer-brand p { margin-top: 1rem; max-width: 34ch; }
+.site-footer h2 { font-size: 1.125rem; margin-bottom: 0.875rem; max-width: none; }
+.site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.footer-actions { margin-top: 1rem; font-weight: 600; line-height: 2; }
+.copyright { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.875rem; }
+.k10-credit { margin-top: 0.75rem; font-size: 0.8125rem; max-width: 80ch; }
+@media (min-width: 40em) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 64em) {
+  .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 3rem; }
+  .site-footer { padding-bottom: 3rem; }
+}
+
+/* ---------- Mobile action bar ---------- */
+.action-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+  padding: 0.625rem var(--gutter) calc(0.625rem + env(safe-area-inset-bottom));
+  background: rgba(250, 241, 232, 0.96);
+  border-top: 1px solid var(--line);
+}
+.action-bar .btn { min-height: 3rem; padding: 0.5rem 1rem; }
+@media (min-width: 60em) { .action-bar { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-light { animation: none; }
+  .btn, .option, .progress-track span, .faq summary::after { transition: none; }
+}
+
+/* ---------- Print: the result only, to take to a GP ---------- */
+@media print {
+  body { background: #FFFFFF; font-size: 11pt; }
+  .draft-bar, .support-strip, .site-header, .hero, .hero-light, main > section:not(#result),
+  .support-band, .commitments, .site-footer, .action-bar, .skip, .result-actions, .result-next .btn { display: none !important; }
+  .result-band { background: none; padding: 0; }
+  .result-card { box-shadow: none; padding: 0; }
+  .print-only { display: block; margin-bottom: 1rem; }
+  .crisis, .crisis-full { border: 1px solid #000000; }
+  a { text-decoration: none; }
+}
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zm2 0V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2"/></symbol>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="draft-bar" role="note">Draft for internal review, 16 October 2026. Result and crisis wording is waiting on clinical review. Not for publishing.</div>
+
+  <p class="support-strip">If you need help right now, call <a href="tel:000">000</a> or Lifeline on <a href="tel:131114">13 11 14</a>.</p>
+
+  <div class="hero-light" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <span class="logo"><img src="images/nurah-logo.png" alt="Nurah" width="480" height="122"></span>
+      <a class="header-call" href="tel:1800571295" data-loc="header">
+        <svg aria-hidden="true"><use href="#i-phone"/></svg>
+        <span>Call</span> 1800 571 295
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div>
+          <p class="loc-line">Wellbeing checklist (K10)</p>
+          <h1 id="hero-title">How have you been feeling lately?</h1>
+          <p class="hero-lede">This short checklist asks 10 questions about the past four weeks. It takes about five minutes. Your answers stay on your device.</p>
+          <ul class="assurances">
+            <li><svg aria-hidden="true"><use href="#i-clock"/></svg>10 questions, about five minutes</li>
+            <li><svg aria-hidden="true"><use href="#i-lock"/></svg>Nothing is saved or sent</li>
+            <li><svg aria-hidden="true"><use href="#i-person"/></svg>For people aged 16 and over</li>
+          </ul>
+        </div>
+
+        <!-- The checklist runs entirely in this browser tab. See the script at the end of the page. -->
+        <section class="check-panel" id="checklist" aria-labelledby="check-title">
+          <div id="check-body">
+            <h2 id="check-title" tabindex="-1">Wellbeing checklist</h2>
+            <p class="panel-intro">You'll see 10 questions about how you've been feeling over the past four weeks. Choose the answer that fits best. There are no right or wrong answers.</p>
+            <button type="button" class="btn btn-primary" data-start>Start the checklist</button>
+            <p class="panel-note">Your answers stay on your device. Close this page and they're gone.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Result: hidden until all 10 questions are answered. Filled in by the script below. -->
+    <section class="band result-band" id="result" aria-labelledby="result-title" hidden>
+      <div class="wrap result-wrap">
+        <div id="crisis-top"></div>
+        <div class="result-card">
+          <p class="print-only"><strong>Nurah wellbeing checklist (K10) result</strong></p>
+          <div class="result-grid">
+          <div class="result-main">
+          <p class="result-eyebrow">Your result</p>
+          <h2 id="result-title" tabindex="-1"></h2>
+          <p class="score-line">Your score: <strong id="result-score"></strong> out of 50 (<span id="result-band"></span>)</p>
+          <div class="meter" aria-hidden="true">
+            <span class="meter-marker" id="meter-marker"></span>
+            <div class="meter-bar">
+              <span class="seg-low" data-band="low"></span>
+              <span class="seg-moderate" data-band="moderate"></span>
+              <span class="seg-high" data-band="high"></span>
+              <span class="seg-very-high" data-band="very-high"></span>
+            </div>
+            <div class="meter-labels">
+              <span class="seg-low" data-band="low">Low<br>10&ndash;15</span>
+              <span class="seg-moderate" data-band="moderate">Moderate<br>16&ndash;21</span>
+              <span class="seg-high" data-band="high">High<br>22&ndash;29</span>
+              <span class="seg-very-high" data-band="very-high">Very high<br>30&ndash;50</span>
+            </div>
+          </div>
+          </div>
+          <div class="result-detail">
+            <div class="prose result-body" id="result-body"></div>
+            <div class="result-next" id="result-next"></div>
+          </div>
+          </div>
+          <div class="result-foot">
+          <div class="fixed-lines">
+            <p>This isn't a diagnosis. Only a health professional can give you one.</p>
+            <p>Your result is general guidance only and isn't medical advice.</p>
+          </div>
+          <p class="under18">If you're under 18, scores on this checklist can run higher at your age. Talking it through with someone you trust, your GP or Kids Helpline (<a href="tel:1800551800">1800 55 1800</a>) is a good next step.</p>
+          <p class="print-only">Completed on <span id="result-date"></span>. Score bands from the Australian Bureau of Statistics.</p>
+          <div class="result-actions">
+            <button type="button" class="btn btn-quiet btn-small" data-print>Print or save your result</button>
+            <button type="button" class="btn btn-quiet btn-small" data-restart>Start again</button>
+          </div>
+          </div>
+        </div>
+        <div id="crisis-bottom"></div>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="before-title">
+      <div class="wrap">
+        <h2 id="before-title">Before you start</h2>
+        <ul class="ways ways-3">
+          <li>
+            <h3>What it is</h3>
+            <p>The K10 is a checklist that's widely used in Australia, including by GPs. It helps you understand how much distress you've been feeling over the past four weeks.</p>
+          </li>
+          <li>
+            <h3>What it isn't</h3>
+            <p>It's not a diagnosis. Only a health professional can give you one. Your result can be a helpful starting point for a conversation.</p>
+          </li>
+          <li>
+            <h3>Your privacy</h3>
+            <p>Nothing you choose is saved or sent anywhere, including to Nurah. Close this page and your answers are gone.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="band band-deep" aria-labelledby="help-title">
+      <div class="wrap split">
+        <div class="media-slot">
+          <img src="images/counselling-telehealth.webp" alt="A woman sitting on her couch at home, smiling as she talks with someone on her laptop" width="1000" height="667" loading="lazy">
+        </div>
+        <div>
+          <h2 id="help-title">If you'd like to talk to someone</h2>
+          <div class="prose">
+            <p>Nurah's <a href="https://nurah.org.au/psychology-services/">psychologists</a> and <a href="https://nurah.org.au/counselling-services/">counsellors</a> work with people aged 16 and over by video or phone. Together, we can look at what's been weighing on you and find ways forward that fit your life, at your pace.</p>
+          </div>
+          <ul class="ways" style="margin-top:1.75rem">
+            <li>
+              <h3><a href="https://nurah.org.au/psychology-services/">Psychology</a></h3>
+              <p>Psychologists are registered health professionals. They can work with you on things like stress, worry and low mood.</p>
+            </li>
+            <li>
+              <h3><a href="https://nurah.org.au/counselling-services/">Counselling</a></h3>
+              <p>Counselling gives you space to talk things through with someone who listens and helps you make sense of what's going on.</p>
+            </li>
+            <li>
+              <h3>Video or phone</h3>
+              <p>Join from wherever you feel comfortable. There's no need to travel.</p>
+            </li>
+          </ul>
+          <a class="btn btn-quiet section-cta" href="https://nurah.org.au/contact-us/" data-loc="talk-to-someone">Get in touch</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="faq-title">
+      <div class="wrap">
+        <h2 id="faq-title">Common questions</h2>
+        <div class="faq">
+          <details>
+            <summary>Is this a diagnosis?</summary>
+            <p>No. The K10 helps you understand how much distress you've been feeling. Only a health professional can diagnose a mental health condition.</p>
+          </details>
+          <details>
+            <summary>Is anything I enter saved?</summary>
+            <p>No. Your answers stay on your device. We don't save them, send them to Nurah or use cookies to remember them. Close the page and they're gone.</p>
+          </details>
+          <details>
+            <summary>Who created the K10?</summary>
+            <p>Professor Ronald Kessler and colleagues at Harvard Medical School. It's widely used in Australia, including in national health surveys and by GPs.</p>
+          </details>
+          <details>
+            <summary>Can I fill it in for someone else?</summary>
+            <p>The checklist is designed for you to answer about yourself. If you're worried about someone, Beyond Blue has <a href="https://www.beyondblue.org.au/mental-health/supporting-someone">advice on supporting someone else</a>.</p>
+          </details>
+          <details>
+            <summary>What if I'm under 18?</summary>
+            <p>You're welcome to use it. Scores can run higher for young people, so it's a good idea to talk your result through with someone you trust or your GP.</p>
+          </details>
+          <details>
+            <summary>What happens if I get in touch with Nurah?</summary>
+            <p>We'll have a friendly chat about what's going on for you and whether Counselling or Psychology might suit. There's no pressure to book.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="enquire" aria-labelledby="enquire-title">
+      <div class="enquire-media">
+        <img src="images/nurah-banner.webp" alt="A smiling young woman with her arms crossed, framed by the Nurah symbol" width="1100" height="669" loading="lazy">
+      </div>
+      <div class="enquire-body">
+        <h2 id="enquire-title">Nurah is here when you're ready</h2>
+        <p>Send us a <a href="mailto:hello@nurah.org.au" data-loc="enquire-banner">message</a> or call <a href="tel:1800571295" data-loc="enquire-banner">1800 571 295</a>. There's no pressure to book.</p>
+        <a class="btn btn-light" href="https://nurah.org.au/contact-us/" data-loc="enquire-banner">Get in touch</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="support-band">
+    <div class="wrap">
+      <p class="support-note">If you need support right now, call Lifeline on <a href="tel:131114">13 11 14</a> any time, day or night. In an emergency, call <a href="tel:000">000</a>. Nurah isn't a crisis service.</p>
+    </div>
+  </div>
+
+  <section class="commitments" aria-label="Our commitments">
+    <div class="wrap commitments-grid">
+      <div>
+        <img src="images/ack-flags.webp" alt="Aboriginal and Torres Strait Islander flags" width="149" height="46" loading="lazy">
+        <h2>Acknowledgement</h2>
+        <p>Nurah acknowledges Aboriginal and Torres Strait Islander peoples as Australia's First People and Traditional Custodians. We value their cultures, identities, and continuing connection to country, waters, kin and community. We pay our respects to Elders past and present and are committed to making a positive contribution to the wellbeing of Aboriginal and Torres Strait Islander peoples, by providing services that are welcoming, safe, culturally appropriate and inclusive.</p>
+      </div>
+      <div>
+        <img src="images/flag-diversity.webp" alt="Progress Pride flag" width="68" height="46" loading="lazy">
+        <h2>Diversity and inclusion</h2>
+        <p>Nurah is committed to embracing diversity and removing all forms of discrimination from the health services we provide. We welcome everyone, whatever their culture, ethnicity, faith, sexual orientation or gender identity.</p>
+      </div>
+      <div>
+        <img src="images/flag-accessibility.webp" alt="Accessibility symbol" width="68" height="46" loading="lazy">
+        <h2>Accessibility</h2>
+        <p>Nurah is committed to ensuring digital accessibility for people living with disability. We are continually improving the user experience for everyone, and applying the relevant accessibility standards. <a href="https://nurah.org.au/accessibility-statement/">View our accessibility statement</a>.</p>
+      </div>
+      <div>
+        <img src="images/privacy.webp" alt="Padlock icon" width="68" height="46" loading="lazy">
+        <h2>Privacy</h2>
+        <p>Our <a href="https://nurah.org.au/privacy-policy/">Privacy Policy</a> explains how we collect, store, use and share your personal information, including health information, in line with Australian privacy law.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="images/nurah-logo-footer.webp" alt="Nurah. Where clarity and support begin" width="560" height="133" loading="lazy">
+        <p>Counselling, psychology and behaviour support for NDIS participants and private clients. Warm, professional, and built around you.</p>
+        <p>Powered by <a href="https://nurah.org.au/about-us/coact/">CoAct</a></p>
+      </div>
+      <div>
+        <h2>Head office</h2>
+        <p>Nurah (CoAct)<br>Level 1, 416 Logan Rd<br>Greenslopes<br>QLD 4120</p>
+        <p class="footer-actions"><a href="https://nurah.org.au/contact-us/">Make an enquiry</a><br><a href="https://nurah.org.au/for-referrers/">Make a referral</a></p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          <li><a href="https://nurah.org.au/behaviour-support/">Behaviour Support</a></li>
+          <li><a href="https://nurah.org.au/counselling-services/">Counselling</a></li>
+          <li><a href="https://nurah.org.au/psychology-services/">Psychology</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Links</h2>
+        <ul>
+          <li><a href="https://nurah.org.au/contact-us/">Contact us</a></li>
+          <li><a href="https://nurah.org.au/about-us/">About us</a></li>
+          <li><a href="https://nurah.org.au/about-us/join-our-team/">Join our team</a></li>
+          <li><a href="https://coact.org.au/wp-content/uploads/2026/07/Privacy_Policy_16_7_26.pdf">Privacy policy</a></li>
+          <li><a href="https://nurah.org.au/complaints-feedback/">Complaints &amp; feedback</a></li>
+          <li><a href="https://nurah.org.au/accessibility-statement/">Accessibility statement</a></li>
+          <li><a href="https://nurah.org.au/disclaimer/">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="copyright">&copy; 2026 Nurah.</p>
+      <!-- TODO: confirm this credit wording against Harvard's K6/K10 page (hcp.med.harvard.edu/ncs/k6_scales.php) before going live -->
+      <p class="k10-credit">The K10 is reproduced unmodified. Copyright &copy; Ronald C. Kessler, PhD, Department of Health Care Policy, Harvard Medical School. Kessler RC et al. (2003). Screening for serious mental illness in the general population. Archives of General Psychiatry, 60(2), 184&ndash;189. Score bands from the Australian Bureau of Statistics.</p>
+    </div>
+  </footer>
+
+  <nav class="action-bar" aria-label="Quick actions">
+    <a class="btn btn-quiet" href="tel:1800571295" data-loc="mobile-bar"><svg aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
+    <a class="btn btn-primary" href="#checklist" data-loc="mobile-bar">Start the checklist</a>
+  </nav>
+
+  <script>
+/* K10 wellbeing checklist.
+   Everything happens in this browser tab: no cookies, no storage, no network requests and nothing pushed to the dataLayer.
+   Question wording must stay unmodified (condition of using the K10). Bands: ABS National Health Survey. */
+(function () {
+  'use strict';
+
+  var QUESTIONS = [
+    'About how often did you feel tired out for no good reason?',
+    'About how often did you feel nervous?',
+    'About how often did you feel so nervous that nothing could calm you down?',
+    'About how often did you feel hopeless?',
+    'About how often did you feel restless or fidgety?',
+    'About how often did you feel so restless you could not sit still?',
+    'About how often did you feel depressed?',
+    'About how often did you feel that everything was an effort?',
+    'About how often did you feel so sad that nothing could cheer you up?',
+    'About how often did you feel worthless?'
+  ];
+
+  // Scored 1 to 5, top to bottom
+  var OPTIONS = ['None of the time', 'A little of the time', 'Some of the time', 'Most of the time', 'All of the time'];
+
+  var CONTACT = 'https://nurah.org.au/contact-us/';
+  var PSYCH = 'https://nurah.org.au/psychology-services/';
+  var COUNS = 'https://nurah.org.au/counselling-services/';
+  var TEAM = 'Our <a href="' + PSYCH + '">psychologists</a> and <a href="' + COUNS + '">counsellors</a>';
+
+  // Draft wording for clinical review (see design doc, section 6)
+  var BANDS = [
+    {
+      key: 'low', label: 'Low', min: 10, max: 15, crisis: 'compact',
+      heading: 'You seem to be doing OK right now',
+      body: [
+        "Your answers suggest you've had little or no distress over the past four weeks.",
+        'Keep doing the things that help you feel well, like rest, time with people you care about and moving your body. It can be useful to check in with yourself again from time to time.'
+      ],
+      next: "<p>If things change, we're here. You can read about <a href=\"" + COUNS + "\">Counselling</a> and <a href=\"" + PSYCH + "\">Psychology</a> at Nurah.</p>"
+    },
+    {
+      key: 'moderate', label: 'Moderate', min: 16, max: 21, crisis: 'compact',
+      heading: 'You may be feeling a bit unsettled',
+      body: [
+        "Your answers suggest you've had a moderate level of distress over the past four weeks. That's more common than you might think.",
+        'Talking it through with someone you trust or your GP can help you work out what might be getting in the way.'
+      ],
+      next: '<p><a href="' + COUNS + '">Counselling</a> or <a href="' + PSYCH + "\">Psychology</a> may help you understand what's going on and find ways to manage it. Get in touch when you're ready.</p>" +
+            '<a class="btn btn-quiet" href="' + CONTACT + '" data-loc="result-moderate">Get in touch</a>'
+    },
+    {
+      key: 'high', label: 'High', min: 22, max: 29, crisis: 'full',
+      heading: 'Things may be feeling really hard right now',
+      body: [
+        "Your answers suggest you've had a high level of distress over the past four weeks. You don't have to work through this on your own.",
+        'A good next step is to talk to your GP. They can talk with you about your options, including a Mental Health Treatment Plan.'
+      ],
+      next: '<p>' + TEAM + " work with people by video or phone. We're here when you're ready. You can also call us on <a href=\"tel:1800571295\">1800 571 295</a>.</p>" +
+            '<a class="btn btn-primary" href="' + CONTACT + '" data-loc="result-high">Get in touch</a>'
+    },
+    {
+      key: 'very-high', label: 'Very high', min: 30, max: 50, crisis: 'full',
+      heading: 'You may be feeling deeply overwhelmed',
+      body: [
+        "Your answers suggest you've had a very high level of distress over the past four weeks. Please reach out for support today. You could call one of the services above, see your GP or talk to someone you trust.",
+        "<strong>If you're thinking about suicide or feel unsafe, call <a href=\"tel:000\">000</a> now, or Lifeline on <a href=\"tel:131114\">13 11 14</a>.</strong>",
+        "Nurah isn't a crisis service, so we can't respond straight away."
+      ],
+      next: '<p>Once you have support in place, ' + TEAM.charAt(0).toLowerCase() + TEAM.slice(1) + ' can work with you by video or phone.</p>' +
+            '<a class="btn btn-primary" href="' + CONTACT + '" data-loc="result-very-high">Get in touch</a>'
+    }
+  ];
+
+  // Checked on Beyond Blue's urgent help page, 16 October 2026
+  var SERVICES = [
+    { name: 'Emergency', note: "If you or someone else is in danger", tel: '000', show: '000' },
+    { name: 'Lifeline', note: 'Crisis support 24/7. You can also text <a href="sms:0477131114">0477 131 114</a>.', tel: '131114', show: '13 11 14' },
+    { name: 'Suicide Call Back Service', note: 'Support if you or someone you know is thinking about suicide', tel: '1300659467', show: '1300 659 467' },
+    { name: 'Beyond Blue', note: 'Talk to a counsellor', tel: '1300224636', show: '1300 22 4636' },
+    { name: '13YARN', note: 'Crisis support for Aboriginal and Torres Strait Islander people', tel: '139276', show: '13 92 76' },
+    { name: 'Kids Helpline', note: 'For young people aged 5 to 25', tel: '1800551800', show: '1800 55 1800' }
+  ];
+
+  var answers = [null, null, null, null, null, null, null, null, null, null];
+  var current = 0;
+  var advanceTimer = null;
+
+  var panel = document.getElementById('checklist');
+  var body = document.getElementById('check-body');
+  var introHTML = body.innerHTML;
+  var result = document.getElementById('result');
+
+  function serviceItem(s) {
+    return '<li><span class="svc">' + s.name + '</span>' +
+      '<a href="tel:' + s.tel + '">' + s.show + '</a>' +
+      '<span class="note">' + s.note + '</span></li>';
+  }
+
+  function crisisBox(full) {
+    if (full) {
+      return '<aside class="crisis crisis-full" aria-labelledby="crisis-title">' +
+        '<div class="crisis-head"><h3 id="crisis-title">If you need support right now</h3>' +
+        "<p>Talking to someone can help. You don't have to be in crisis to call.</p></div>" +
+        '<ul class="crisis-list">' + SERVICES.map(serviceItem).join('') + '</ul></aside>';
+    }
+    return '<aside class="crisis" aria-labelledby="crisis-title">' +
+      '<h3 id="crisis-title">Need to talk to someone now?</h3>' +
+      '<ul class="crisis-list">' + SERVICES.slice(0, 2).map(serviceItem).join('') + '</ul>' +
+      '<details><summary>More support services</summary>' +
+      '<ul class="crisis-list">' + SERVICES.slice(2).map(serviceItem).join('') + '</ul></details></aside>';
+  }
+
+  function renderQuestion(i) {
+    current = i;
+    var steps = '';
+    for (var s = 0; s < QUESTIONS.length; s++) {
+      steps += '<span class="' + (s === i ? 'now' : (answers[s] !== null ? 'done' : '')) + '"></span>';
+    }
+    var html =
+      '<p class="progress-text">Question ' + (i + 1) + ' of ' + QUESTIONS.length + '</p>' +
+      '<div class="progress-steps" aria-hidden="true">' + steps + '</div>' +
+      '<fieldset class="question" aria-describedby="key-hint"><legend>' +
+      '<span class="stem">In the past four weeks:</span>' +
+      '<span class="q-text" id="q-text" tabindex="-1">' + QUESTIONS[i] + '</span>' +
+      '</legend><div class="options">';
+    OPTIONS.forEach(function (label, n) {
+      var value = n + 1;
+      html += '<label class="option"><input type="radio" name="k10" value="' + value + '"' +
+        (answers[i] === value ? ' checked' : '') + '><span>' + label + '</span></label>';
+    });
+    html += '</div></fieldset>' +
+      '<p class="key-hint" id="key-hint">Use the arrow keys to choose an answer, then press Enter to ' +
+      (i === QUESTIONS.length - 1 ? 'see your result.' : 'go to the next question.') + '</p>' +
+      (i > 0 ? '<div class="q-nav"><button type="button" class="btn btn-quiet btn-small" data-back>Back</button></div>' : '');
+    body.innerHTML = html;
+    document.getElementById('q-text').focus();
+  }
+
+  function goNext() {
+    advanceTimer = null;
+    if (answers[current] === null) return;
+    if (current < QUESTIONS.length - 1) renderQuestion(current + 1);
+    else showResult();
+  }
+
+  function bandFor(total) {
+    for (var i = 0; i < BANDS.length; i++) {
+      if (total >= BANDS[i].min && total <= BANDS[i].max) return BANDS[i];
+    }
+    return null;
+  }
+
+  function showResult() {
+    var total = answers.reduce(function (sum, a) { return sum + a; }, 0);
+    var band = bandFor(total);
+    if (!band) return;
+
+    document.getElementById('result-title').textContent = band.heading;
+    document.getElementById('result-score').textContent = total;
+    document.getElementById('result-band').textContent = band.label;
+    document.getElementById('result-body').innerHTML = band.body.map(function (p) { return '<p>' + p + '</p>'; }).join('');
+    document.getElementById('result-next').innerHTML = band.next;
+    document.getElementById('result-date').textContent =
+      new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    // High and Very high: crisis support sits above the result. Low and Moderate: a smaller box below it.
+    var full = band.crisis === 'full';
+    document.getElementById('crisis-top').innerHTML = full ? crisisBox(true) : '';
+    document.getElementById('crisis-bottom').innerHTML = full ? '' : crisisBox(false);
+
+    result.querySelectorAll('[data-band]').forEach(function (el) {
+      el.classList.toggle('is-current', el.getAttribute('data-band') === band.key);
+    });
+    document.getElementById('meter-marker').style.left = ((total - 10) / 40 * 100) + '%';
+
+    body.innerHTML =
+      '<h2 id="check-title" tabindex="-1">Thanks for completing the checklist</h2>' +
+      '<p class="panel-intro">Your result is below.</p>' +
+      '<p class="panel-note"><a href="#result">Go to your result</a></p>';
+
+    result.hidden = false;
+    var title = document.getElementById('result-title');
+    result.scrollIntoView({ block: 'start' });
+    title.focus({ preventScroll: true });
+  }
+
+  function restart() {
+    answers = [null, null, null, null, null, null, null, null, null, null];
+    result.hidden = true;
+    document.getElementById('crisis-top').innerHTML = '';
+    document.getElementById('crisis-bottom').innerHTML = '';
+    body.innerHTML = introHTML;
+    panel.scrollIntoView({ block: 'start' });
+    document.getElementById('check-title').focus({ preventScroll: true });
+  }
+
+  body.addEventListener('change', function (e) {
+    if (e.target.name !== 'k10') return;
+    answers[current] = Number(e.target.value);
+  });
+
+  body.addEventListener('click', function (e) {
+    // A mouse or touch choice moves on by itself. Arrow keys (click detail 0) only choose, so keyboard users press Enter.
+    if (e.target.closest('.option') && e.detail > 0) {
+      if (!advanceTimer) advanceTimer = window.setTimeout(goNext, 250);
+      return;
+    }
+    if (e.target.closest('[data-back]') && current > 0) renderQuestion(current - 1);
+  });
+
+  body.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || e.target.name !== 'k10') return;
+    e.preventDefault();
+    if (!e.target.checked) {
+      e.target.checked = true;
+      answers[current] = Number(e.target.value);
+    }
+    goNext();
+  });
+
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-start]')) {
+      renderQuestion(0);
+      panel.scrollIntoView({ block: 'start' });
+    } else if (e.target.closest('[data-restart]')) {
+      restart();
+    } else if (e.target.closest('[data-print]')) {
+      window.print();
+    }
+  });
+
+  // Links that leave this page open in a new tab, so people don't lose their result
+  function markExternal(root) {
+    root.querySelectorAll('a[href^="http"]:not([target])').forEach(function (a) {
+      a.target = '_blank';
+      a.rel = 'noopener';
+      var note = document.createElement('span');
+      note.className = 'visually-hidden';
+      note.textContent = ' (opens in a new tab)';
+      a.appendChild(note);
+    });
+  }
+  markExternal(document);
+  new MutationObserver(function () { markExternal(result); }).observe(result, { childList: true, subtree: true });
+
+  // Show every support service on the printed copy
+  window.addEventListener('beforeprint', function () {
+    result.querySelectorAll('details').forEach(function (d) { d.open = true; });
+  });
+})();
+  </script>
+</body>
+</html>
